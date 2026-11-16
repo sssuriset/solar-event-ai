@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "solar-event-ai"
+version = "0.1.0"
+description = "Scientific detection and physical analysis of small-scale solar events"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=1.26",
+    "astropy>=6.1",
+    "matplotlib>=3.8",
+    "sunpy[map,net]>=8.0,<9"
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
