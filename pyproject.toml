@@ -9,6 +9,7 @@ description = "Scientific detection and physical analysis of small-scale solar e
 requires-python = ">=3.12"
 dependencies = [
     "numpy>=1.26",
+    "scipy>=1.17",
     "astropy>=6.1",
     "matplotlib>=3.8",
     "sunpy[map,net]>=8.0,<9"

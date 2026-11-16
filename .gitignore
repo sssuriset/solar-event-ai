@@ -12,3 +12,12 @@ data/raw/
 data/processed/
 results/figures/
 results/catalogs/
+
+# Local scientific data
+*.fits
+*.fits.gz
+data/raw/
+data/processed/
+results/
+.venv/
+.env
