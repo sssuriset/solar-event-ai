@@ -12,6 +12,7 @@ from matplotlib.patches import Circle
 
 from .detect import BrighteningDetector
 from .iris_sji import IRISSJI
+from .alignment_qc import alignment_check
 from .review import review_candidates
 
 
@@ -35,6 +36,14 @@ def build_parser():
     review.add_argument("--crop-radius", type=int, default=25)
     review.add_argument("--edge-margin", type=int, default=16)
     review.add_argument("--output", type=Path, default=Path("results"))
+    align = subcommands.add_parser("align-check", help="Diagnose residual frame jitter (no changes to data)")
+    align.add_argument("file", type=Path)
+    align.add_argument("--start", help="UTC start")
+    align.add_argument("--end", help="UTC end")
+    align.add_argument("--max-frames", type=int, default=0)
+    align.add_argument("--stride", type=int, default=1)
+    align.add_argument("--max-shift", type=int, default=12)
+    align.add_argument("--output", type=Path, default=Path("results"))
     return parser
 
 
@@ -134,6 +143,8 @@ def main(argv=None):
         return scan_observation(args)
     if args.command == "review":
         return review_candidates(args)
+    if args.command == "align-check":
+        return alignment_check(args)
     raise ValueError(f"Unknown command: {args.command}")
 
 
