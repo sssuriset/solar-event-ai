@@ -12,6 +12,7 @@ from matplotlib.patches import Circle
 
 from .detect import BrighteningDetector
 from .iris_sji import IRISSJI
+from .review import review_candidates
 
 
 def build_parser():
@@ -26,6 +27,14 @@ def build_parser():
     scan.add_argument("--min-area", type=int, default=3)
     scan.add_argument("--output", type=Path, default=Path("results"))
     scan.add_argument("--overlay-limit", type=int, default=20)
+    review = subcommands.add_parser("review", help="Compare detections across frames")
+    review.add_argument("file", type=Path, help="Same original FITS cube used for scanning")
+    review.add_argument("--catalog", required=True, type=Path, help="CSV from solar-ai scan")
+    review.add_argument("--max-examples", type=int, default=6)
+    review.add_argument("--offset-frames", type=int, default=3)
+    review.add_argument("--crop-radius", type=int, default=25)
+    review.add_argument("--edge-margin", type=int, default=16)
+    review.add_argument("--output", type=Path, default=Path("results"))
     return parser
 
 
@@ -123,6 +132,8 @@ def main(argv=None):
     args = build_parser().parse_args(argv)
     if args.command == "scan":
         return scan_observation(args)
+    if args.command == "review":
+        return review_candidates(args)
     raise ValueError(f"Unknown command: {args.command}")
 
 
