@@ -28,3 +28,6 @@ packages = ["solar_event_ai"]
 pythonpath = ["src"]
 testpaths = ["tests"]
 addopts = ["--import-mode=importlib"]
+
+[project.scripts]
+solar-ai = "solar_event_ai.cli:main"
