@@ -12,6 +12,7 @@ from matplotlib.patches import Circle
 
 from .detect import BrighteningDetector
 from .iris_sji import IRISSJI
+from .tracking import track_catalog
 from .alignment_qc import alignment_check
 from .review import review_candidates
 
@@ -44,6 +45,14 @@ def build_parser():
     align.add_argument("--stride", type=int, default=1)
     align.add_argument("--max-shift", type=int, default=12)
     align.add_argument("--output", type=Path, default=Path("results"))
+    track = subcommands.add_parser("track", help="Link candidate regions into provisional tracks")
+    track.add_argument("--catalog", required=True, type=Path, help="Raw or Phase-2 QC candidate CSV")
+    track.add_argument("--output", type=Path, default=Path("results"))
+    track.add_argument("--max-distance", type=float, default=7.0, help="Association gate in pixels")
+    track.add_argument("--max-gap-frames", type=int, default=2)
+    track.add_argument("--max-gap-seconds", type=float, default=90.0)
+    track.add_argument("--min-detections", type=int, default=2)
+    track.add_argument("--ambiguity-margin", type=float, default=1.5)
     return parser
 
 
@@ -145,6 +154,8 @@ def main(argv=None):
         return review_candidates(args)
     if args.command == "align-check":
         return alignment_check(args)
+    if args.command == "track":
+        return track_catalog(args)
     raise ValueError(f"Unknown command: {args.command}")
 
 
